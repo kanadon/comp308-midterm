@@ -30,6 +30,7 @@ router.get('/add', (req, res, next) => {
       title: 'Add a book',
       books: {
         'Title': '',
+        'Description': '',
         'Price': '',
         'Author': '',
         'Genre': ''
@@ -42,6 +43,7 @@ router.get('/add', (req, res, next) => {
 router.post('/add', (req, res, next) => {
   let newBook = book({
       "Title": req.body.title,
+      "Description": "",
       "Price": req.body.price,
       "Author": req.body.author,
       "Genre": req.body.genre
@@ -64,13 +66,14 @@ router.get('/:id', (req, res, next) => {
 try {
       let id = mongoose.Types.ObjectId.createFromHexString(req.params.id);
 
-      book.findById(id, (err, books) => {
+      book.findById(id, (err, book) => {
         if(err) {
           console.log(err);
           res.end(error);
         } else {
           res.render('books/details', {
-            "Title": "book details"
+            "title": "book details",
+            books: book
           });
         }
       });
@@ -83,18 +86,41 @@ try {
 // POST - process the information passed from the details form and update the document
 router.post('/:id', (req, res, next) => {
 
-    /*****************
-     * ADD CODE HERE *
-     *****************/
+    let id = req.params.id;
+
+     let updatedBook = book({
+       "_id": id,
+      "Title": req.body.title,
+      "Description": "",
+      "Price": req.body.price,
+      "Author": req.body.author,
+      "Genre": req.body.genre
+    });
+
+    book.update({_id: id}, updatedBook, (err) => {
+      if(err) {
+        console.log(err);
+        res.end(err);
+      } else {
+        // refresh the game List
+        res.redirect('/books');
+      }
+    });
 
 });
 
 // GET - process the delete by user id
 router.get('/delete/:id', (req, res, next) => {
+let id = req.params.id;
 
-    /*****************
-     * ADD CODE HERE *
-     *****************/
+    book.remove({_id: id}, (err) => {
+      if(err) {
+        console.log(err);
+        res.end(err);
+      } else {
+        res.redirect('/books');
+      }
+    });
 });
 
 

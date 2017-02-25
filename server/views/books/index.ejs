@@ -32,11 +32,11 @@
                   <td class="text-center"><%= books[count].Genre %></td>
 
                   <td class="text-center">
-                    <a href="/books" class="btn btn-primary"><i class="fa fa-plus"></i>Edit</a>
+                    <a href="/books/<%= books[count]._id %>" class="btn btn-primary"><i class="fa fa-plus"></i>Edit</a>
                   </td>
 
                   <td class="text-center">
-                    <a href="/books/add" class="btn btn-primary"><i class="fa fa-plus"></i>Delete</a>
+                    <a href="/books/delete/<%= books[count]._id %>" class="btn btn-primary"><i class="fa fa-plus"></i>Delete</a>
                   </td>
                 </tr>
                 <% } %>
